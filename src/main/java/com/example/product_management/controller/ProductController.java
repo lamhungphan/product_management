@@ -1,10 +1,11 @@
 package com.example.product_management.controller;
 
 import com.example.product_management.model.Product;
-import com.example.product_management.model.ProductDto;
-import com.example.product_management.service.ProductRepository;
+import com.example.product_management.model.dto.ProductDto;
+import com.example.product_management.repository.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/products")
+@PreAuthorize("hasRole('ADMIN')")
 public class ProductController {
     @Autowired
     private ProductRepository repository;

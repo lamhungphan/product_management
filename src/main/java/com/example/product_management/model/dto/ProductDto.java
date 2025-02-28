@@ -1,4 +1,4 @@
-package com.example.product_management.model;
+package com.example.product_management.model.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
