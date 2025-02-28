@@ -2,6 +2,7 @@ package com.example.product_management.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,7 +17,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index.html", "/account/register").permitAll()
-                        .requestMatchers("/products/**").hasRole("ADMIN")
+                        .requestMatchers("/products/*").hasRole("ADMIN")
+//                        .requestMatchers("/products/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 ).formLogin(form -> form.defaultSuccessUrl("/", true)
                 ).logout(config -> config

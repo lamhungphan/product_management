@@ -4,8 +4,10 @@ import com.example.product_management.model.Product;
 import com.example.product_management.model.dto.ProductDto;
 import com.example.product_management.repository.ProductRepository;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +24,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/products")
 @PreAuthorize("hasRole('ADMIN')")
@@ -119,8 +122,8 @@ public class ProductController {
         return "products/edit";
     }
 
-    @PostMapping("edit")
-    public String updateProduct(Model model, @RequestParam int id, @Valid @ModelAttribute ProductDto productDto, BindingResult bindingResult) {
+    @PostMapping("/edit/{id}")
+    public String updateProduct(Model model, @PathVariable int id, @Valid @ModelAttribute ProductDto productDto, BindingResult bindingResult) {
         try {
             Product product = repository.findById(id).get();
             model.addAttribute("product", product);
@@ -156,6 +159,7 @@ public class ProductController {
             product.setPrice(productDto.getPrice());
             product.setDescription(productDto.getDescription());
 
+            getLog();
             repository.save(product);
 
         } catch (Exception e) {
@@ -166,6 +170,7 @@ public class ProductController {
 
     @GetMapping("/delete")
     public String deleteProduct(@RequestParam int id) {
+        getLog();
         try {
             Product product = repository.findById(id).get();
             Path imagePath = Paths.get("public/images/" + product.getImageFileName());
@@ -179,5 +184,9 @@ public class ProductController {
             throw new RuntimeException(e);
         }
         return "redirect:/products/";
+    }
+
+    private void getLog(){
+        log.info(" account {}" ,SecurityContextHolder.getContext().getAuthentication().getPrincipal() );
     }
 }

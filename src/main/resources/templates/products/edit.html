@@ -12,7 +12,8 @@
     <div class="row">
         <div class="col-md-8 mx-auto rounded border p-4 m-4">
             <h2 class="text-center mb-5">Edit Product</h2>
-            <form method="post" enctype="multipart/form-data" th:object="${productDto}">
+            <form method="post" enctype="multipart/form-data" th:action="@{/products/edit/{id}(id=${product.id})}"
+                  th:object="${productDto}">
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">ID</label>
                     <div class="col-sm-8">
